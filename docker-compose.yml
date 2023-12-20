@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  #cielconcepttogesapi:
+   # image: juanjortega/cielconcepttogesapi-image  # Use the pre-built image from the repository
+    #ports:
+     # - "9091:9091"
+    #restart: "always"
+    #networks:
+     # - bahmni-standard_default
+
+  apidaemon:
+    image: juanjortega/bahmni_notificacionges  # Use the pre-built image from the repository
+    environment:
+      MYSQL_PORT: 3306     
+      MYSQL_DATABASE: notificacion_ges 
+      MYSQL_USER: notificacion
+      MYSQL_PASSWORD: Lopior.123
+      FLASK_PASSWORD: Lopior.123
+      MYSQL_HOST: localhost 
+    restart: "always"
+    networks:
+      bahmni-standard_default:
+        aliases:
+          - "notificacionges-alias"
+
+  gesfrontend:
+    image: juanjortega/bahmni_gn_frontend  # Use the pre-built image from the repository
+    hostname: gesfrontend  
+    ports:
+      - "8092:8092"
+    restart: "always"
+    networks:
+      bahmni-standard_default:
+        aliases:
+          - "gn_frontend-alias"
+      
+  gesbackend:
+    image: juanjortega/bahmni_gn_backend  # Use the pre-built image from the repository
+    hostname: gesbackend  
+    ports:
+      - "8093:8093"
+    restart: "always"
+    networks:
+      bahmni-standard_default:
+        aliases:
+         - "gn_backend-alias"
+
+networks:
+  bahmni-standard_default:
+    external: true
